@@ -4,7 +4,7 @@
 \alias{duplicate_columns}
 \title{Duplicates columns in Fluxnet data if a variable is being processes multiple times}
 \usage{
-duplicate_columns(data, vars)
+duplicate_columns(data, vars, new_names)
 }
 \value{
 data with duplicated columns

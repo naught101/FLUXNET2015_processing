@@ -269,7 +269,7 @@ remove_duplicates <- function(indices){
 #' Duplicates columns in Fluxnet data if a variable is being processes multiple times
 #' @return data with duplicated columns
 #' @export
-duplicate_columns <- function(data, vars){
+duplicate_columns <- function(data, vars, new_names){
   
   #Find variables that are duplicated
   ind_duplicate <- which(duplicated(vars))
@@ -285,6 +285,8 @@ duplicate_columns <- function(data, vars){
     data <- cbind(data, data[,ind_column, drop=FALSE])[, append(1:ncol(data), ncol(data) + 1, after=k-1)]
     
     }
+
+  names(data) <- new_names
   
   return(data)
  

@@ -76,7 +76,7 @@ ReadCSVFluxData <- function(fileinname, vars, datasetname, time_vars, site_log, 
     if(ncol(FluxData) != length(tcol$names))
     {
 
-        FluxData <- duplicate_columns(data=FluxData, vars=tcol$names)
+        FluxData <- duplicate_columns(data=FluxData, vars=tcol$names, tcol$names)
 
         # Make sure FluxData now has correct no. of columns
         if(ncol(FluxData) != length(tcol$names)){
