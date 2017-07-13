@@ -57,7 +57,7 @@ findColIndices = function(fileinname, vars,
 
     #Remove variables that are not present from variable list
     var_names <- vars$Fluxnet_variable[-failed_ind]
-    var_names_new <- vars$Fluxnet_variable[-failed_ind]
+    var_names_new <- vars$Output_variable[-failed_ind]
     var_class <- vars$Fluxnet_class[-failed_ind]
   }
   

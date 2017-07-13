@@ -76,7 +76,7 @@ convert_fluxnet_to_netcdf <- function(site_code, infile, era_file=NA, out_path,
     
   } else {
     time_vars <- c("TIMESTAMP_START", "TIMESTAMP_END")
-    qc_name <- "_QC"
+    qc_name <- "_qc"
     
   }
   

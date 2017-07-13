@@ -433,8 +433,8 @@ GapfillFlux <- function(datain, qc_name, qc_flags, regfill,
 FillQCvarMissing <- function(datain, gapfillVal, qc_name){
   
   #Find QC variables and corresponding data variables
-  qc_ind  <- which(grepl(qc_name, datain$vars))  
-  qc_vars <- datain$vars[qc_ind]
+  qc_ind  <- which(grepl(qc_name, datain$out_vars))
+  qc_vars <- datain$out_vars[qc_ind]
   data_vars <- unlist(strsplit(qc_vars, qc_name))
   
   
