@@ -4,8 +4,7 @@
 \alias{findColIndices}
 \title{Finds variables present in input file}
 \usage{
-findColIndices(fileinname, var_names, var_classes, essential_vars,
-  preferred_vars, time_vars, site_log, ...)
+findColIndices(fileinname, vars, time_vars, site_log, ...)
 }
 \value{
 list of variables and their attributes

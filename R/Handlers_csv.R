@@ -20,11 +20,7 @@ ReadCSVFluxData <- function(fileinname, vars, datasetname, time_vars, site_log, 
     # Get column names and classes:
     # La Thuile sites often have multiple data files, only use first
     # instance here
-    tcol <- findColIndices(fileinname=fileinname[1],
-                           var_names=vars$Fluxnet_variable,
-                           var_classes=vars$Fluxnet_class,
-                           essential_vars=vars$Essential_met,
-                           preferred_vars=vars$Preferred_eval,
+    tcol <- findColIndices(fileinname=fileinname[1], vars=vars,
                            time_vars=time_vars, site_log,
                            datasetname=datasetname)
 

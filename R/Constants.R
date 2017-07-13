@@ -13,8 +13,7 @@
 #' @return list of variables and their attributes
 #' @export
 # Variable names in spreadsheet to be processed:
-findColIndices = function(fileinname, var_names, var_classes, 
-                          essential_vars, preferred_vars,
+findColIndices = function(fileinname, vars,
                           time_vars, site_log, ...) {
   
   #CSV files in Fluxnet2015 Nov '16 release do not follow a set template
@@ -27,38 +26,39 @@ findColIndices = function(fileinname, var_names, var_classes,
   
   #Find file header indices corresponding to desired variables
   #(returns an empty integer if cannot find variable)
-  ind <- sapply(var_names, function(x) which(headers==x))
+  ind <- sapply(vars$Fluxnet_variable, function(x) which(headers==x))
   
   #List variables that could not be found in file (instances where ind length equals 0)
-  #and remove failed variables from var_name and var_classes vectors
+  #and remove failed variables from var$Fluxnet_variable and vars$Fluxnet_class vectors
   failed_ind  <- which(sapply(ind, length)==0)
-  failed_vars <- var_names[failed_ind]
+  failed_vars <- vars$Fluxnet_variable[failed_ind]
   
 
-  #If found variables not present in file
+
+  # Abort if found variables not present in file
   if(length(failed_ind) > 0){
 
     #Check if any essential meteorological variables missing, abort if so
-    if(any(essential_vars[failed_ind])){
+    if(any(vars$Essential_met[failed_ind])){
       error <- paste("Cannot find all essential variables in input file (missing: ", 
-                     paste(var_names[failed_ind[which(essential_vars[failed_ind])]], collapse=","),
+                     paste(vars$Fluxnet_variable[failed_ind[which(vars$Essential_met[failed_ind])]], collapse=","),
                      "), aborting", sep="")
       stop_and_log(error, site_log)
     }
     
     #Check if no desired evaluation variables present, abort if so
-    if(all(preferred_vars[failed_ind]==TRUE)){
+    if(all(vars$Preferred_eval[failed_ind]==TRUE)){
       error <- paste("Cannot find any evaluation variables in input file (missing: ", 
-                     paste(var_names[failed_ind[which(essential_vars[failed_ind])]], collapse=","),
+                     paste(vars$Fluxnet_variable[failed_ind[which(vars$Essential_met[failed_ind])]], collapse=","),
                      "), aborting", sep="")
       stop_and_log(error, site_log)
     }
 
-    
+
     #Remove variables that are not present from variable list
-    var_names   <- var_names[-failed_ind]
-    var_classes <- var_classes[-failed_ind]
-    
+    var_names <- vars$Fluxnet_variable[-failed_ind]
+    var_names_new <- vars$Fluxnet_variable[-failed_ind]
+    var_class <- vars$Fluxnet_class[-failed_ind]
   }
   
   
@@ -77,7 +77,7 @@ findColIndices = function(fileinname, var_names, var_classes,
   #Combine column classes for time and other variables
   #If colClass is set to NULL, R won't read column unnecessarily
   columnClasses <- time_info$classes
-  columnClasses[unlist(ind)] <- var_classes
+  columnClasses[unlist(ind)] <- var_class
 
   
   #Combine names of time and other variables and reorder to match CSV file
@@ -86,11 +86,15 @@ findColIndices = function(fileinname, var_names, var_classes,
   all_vars <- all_vars[order(c(unlist(ind), time_info$ind), all_vars)]
    
   #Reorder variable names so matches the order in CSV file
-  var_names <- var_names[order(unlist(ind), var_names)]  
+  var_names_new <- var_names_new[order(unlist(ind), var_names)]
+  var_names <- var_names[order(unlist(ind), var_names)]
   
   #List outputs
-  tcols <- list(names=var_names, time_names=time_info$names, 
-                all_names=all_vars, classes=columnClasses, 
+  tcols <- list(names=var_names,
+                new_names=var_names_new,
+                time_names=time_info$names,
+                all_names=all_vars,
+                classes=columnClasses,
                 failed_vars=failed_vars)
   
   return(tcols)
