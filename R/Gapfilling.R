@@ -129,8 +129,7 @@ GapfillMet_statistical <- function(datain, qc_name, qc_flags,
   
   
   #Var names and their corresponding output varnames
-  vars_other <- names(ind_others)
-  out_vars   <- datain$out_vars[ind_others]
+  out_vars <- datain$out_vars[ind_others]
   
   ### First gapfill variables other than LWdown and air pressure ###
   
@@ -152,7 +151,7 @@ GapfillMet_statistical <- function(datain, qc_name, qc_flags,
     
     #First use linear interpolation for short
     #subdiurnal gaps
-    temp_data <- linfill_data(data=datain$data[,vars_other[k]], 
+    temp_data <- linfill_data(data=datain$data[,out_vars[k]], 
                               tstepsize=datain$timestepsize,
                               linfill)
 
@@ -164,7 +163,7 @@ GapfillMet_statistical <- function(datain, qc_name, qc_flags,
                               tstepsize=datain$timestepsize,
                               copyfill, start=gaps$tseries_start,
                               end=gaps$tseries_end,
-                              varname=vars_other[k], site_log)
+                              varname=out_vars[k], site_log)
     
     
     if(length(temp_data$missing) > 0) {
@@ -178,16 +177,16 @@ GapfillMet_statistical <- function(datain, qc_name, qc_flags,
     }
        
     #Replace data with gapfilled data
-    datain$data[,vars_other[k]] <- temp_data$data
+    datain$data[,out_vars[k]] <- temp_data$data
         
     if(length(temp_data$missing) > 0){
       
       #Save information to QC flags (creat qc flag if doesn't exist)
-      datain <- update_qc(datain, temp_data, vars_other[k], qc_name, qc_value, 
+      datain <- update_qc(datain, temp_data, out_vars[k], qc_name, qc_value, 
                           qc_flags, outname=out_vars[k], cat="Met")  
       
       #Save gapfilling methods
-      datain$gapfill_met[vars_other[k]] <- paste(method, collapse="; ")
+      datain$gapfill_met[out_vars[k]] <- paste(method, collapse="; ")
          
     } #qc
     

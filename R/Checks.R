@@ -56,9 +56,9 @@ CheckDataGaps <- function(datain, qc_flags, missing, gapfill_all,
   
   
   #Find essential and preferred vars
-  essential_met  <- datain$vars[which(datain$essential_met)] 
-  preferred_eval <- datain$vars[which(datain$preferred_eval)]
-  all_eval       <- datain$vars[which(datain$categories=="Eval")]
+  essential_met  <- datain$out_vars[which(datain$essential_met)] 
+  preferred_eval <- datain$out_vars[which(datain$preferred_eval)]
+  all_eval       <- datain$out_vars[which(datain$categories=="Eval")]
   
   #Determine what gapfilling thresholds to use
   #If 'gapfill_all' is set, use that
@@ -129,7 +129,7 @@ CheckDataGaps <- function(datain, qc_flags, missing, gapfill_all,
     if(any(!is.na(threshold))){
       
       #Check if QC variable exists
-      qc_var <- which(datain$vars==paste(datain$vars[k], qc_name, sep="")) 
+      qc_var <- which(datain$out_vars==paste(datain$out_vars[k], qc_name, sep="")) 
       
       #If found QC variable, calculate percentage of gap-filling
       if(length(qc_var) > 0){
@@ -366,8 +366,8 @@ CheckDataGaps <- function(datain, qc_flags, missing, gapfill_all,
     
     #Calculate % gap-filled
     #Find indices for QC variables (if exist)
-    qc_ind <- sapply(datain$vars, function(x) 
-      which(datain$vars==paste(x, qc_name, sep="")))
+    qc_ind <- sapply(datain$out_vars, function(x) 
+      which(datain$out_vars==paste(x, qc_name, sep="")))
     
     total_gapfilled[[k]] <- vector()
     for(v in 1:length(qc_ind)){
@@ -431,7 +431,7 @@ CheckDataRanges <- function(datain, site_log){
   # as set in the "variables" auxiliary file
   
   #Loop through variables
-  for(k in 1:length(datain$vars)){
+  for(k in 1:length(datain$out_vars)){
     
     data <- datain$data[[k]]
     
@@ -451,7 +451,7 @@ CheckDataRanges <- function(datain, site_log){
     #Return error if variable outside specified range
     if(data_range[1] < valid_range[1] | data_range[2] > valid_range[2]){
       error <- paste("Variable outside expected ranges. Check variable ",
-                     datain$vars[k], "; data range is [", data_range[1], 
+                     datain$out_vars[k], "; data range is [", data_range[1], 
                      ", ", data_range[2], "], valid range is [", 
                      valid_range[1], ", ", valid_range[2],
                      "]. Check data or change data range in variables auxiliary file",

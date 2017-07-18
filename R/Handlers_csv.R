@@ -89,6 +89,9 @@ ReadCSVFluxData <- function(fileinname, vars, datasetname, time_vars, site_log, 
 
     }
 
+    # Rename columns to internal/output names
+    names(FluxData) <- tcol$new_names
+
     # Retrieve original and target units for variables present:
     units <- retrieve_units(vars_present=tcol$names,
                             all_vars=vars)

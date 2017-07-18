@@ -177,13 +177,14 @@ convert_fluxnet_to_netcdf <- function(site_code, infile, era_file=NA, out_path,
   #Set these time steps to 3 (poor gap-filling)
   DataFromText <- FillQCvarMissing(datain=DataFromText, 
                                    gapfillVal=qc_flags$QC_gapfilled, 
-                                   qc_name=qc_name)
+                                   qc_name='_qc') # TODO: Needs to change if data names change
   
   
   # Check if variables have gaps in the time series and determine what years to output:
   gaps  <- CheckDataGaps(datain = DataFromText, qc_flags=qc_flags, 
                          missing=conv_opts$missing, gapfill_all=conv_opts$gapfill_all,
-                         gapfill_good=NA, gapfill_med=NA, gapfill_poor=NA, min_yrs=conv_opts$min_yrs,
+                         gapfill_good=NA, gapfill_med=NA, gapfill_poor=NA,
+                         min_yrs=conv_opts$min_yrs,
                          qc_name=qc_name, showWarn=FALSE, site_log=site_log)
   
   
