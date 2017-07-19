@@ -103,17 +103,14 @@ plot_nc <- function(ncfile, analysis_type, vars, varnames, outfile){
     if(analysis_type[k]=="annual"){
       
       #Initialise file
-      if(no_vars > 3){
-         pdf(paste(outfile, "AnnualCycle.pdf", sep=""), height=no_vars*5,
-            width=no_vars*5)
-      } else {
-         pdf(paste(outfile, "AnnualCycle.pdf", sep=""), height=no_vars,
-            width=no_vars)
-      }
+      ncol = 4
+      nrow = ceiling(no_vars/ncol)
+      pdf(paste(outfile, "AnnualCycle.pdf", sep=""),
+          height=nrow*3, width=ncol*3)  # inches
       
-      par(mai=c(0.6,0.7,0.7,0.2))
-      par(omi=c(0.8,0.5,0.2,0.1))
-      par(mfrow=c(ceiling(sqrt(no_vars)), ceiling(sqrt(no_vars))))
+      # par(mai=c(0.6,0.7,0.7,0.2))
+      # par(omi=c(0.8,0.5,0.2,0.1))
+      par(mfrow=c(nrow, ncol))
       
       #Plot
       for(n in 1:length(data)){
@@ -138,17 +135,12 @@ plot_nc <- function(ncfile, analysis_type, vars, varnames, outfile){
     } else if(analysis_type[k]=="diurnal"){
       
       #Initialise file
-      if(no_vars > 3){
-        pdf(paste(outfile, "DiurnalCycle.pdf", sep=""), height=no_vars*10,
-            width=no_vars*10)
-      } else {
-        pdf(paste(outfile, "DiurnalCycle.pdf", sep=""), height=no_vars,
-            width=no_vars)
-      }
+      ncol = 4
+      nrow = ceiling(no_vars/ncol)
+      pdf(paste(outfile, "DiurnalCycle.pdf", sep=""),
+          height=nrow*3, width=ncol*3)  # inches
       
-      par(mai=c(0.6,0.7,0.7,0.2))
-      par(omi=c(0.8,0.5,0.2,0.1))
-      par(mfrow=c(ceiling(sqrt(no_vars)), ceiling(sqrt(no_vars))))
+      par(mfrow=c(nrow, ncol))
       
       #Plot
       for(n in 1:length(data)){  
@@ -191,16 +183,15 @@ plot_nc <- function(ncfile, analysis_type, vars, varnames, outfile){
     } else if(analysis_type[k]=="timeseries"){
 
       #Initialise file
-      if(no_vars > 3){
-        pdf(paste(outfile, "Timeseries.pdf", sep=""), height=no_vars*2.2*2.5, width=no_vars*1.4*2.5)
-      } else {
-        pdf(paste(outfile, "Timeseries.pdf", sep=""), height=no_vars*2.2, width=no_vars*1.4)        
-      }
+      ncol = 2
+      nrow = ceiling(no_vars/ncol)
+      png(paste(outfile, "Timeseries.png", sep=""),
+          res=150, pointsize=9,
+          units='in', height=nrow*4, width=ncol*10)
       
-      par(mai=c(0.6,0.6,0.4,0.2))
-      par(omi=c(0.8,0.5,0.2,0.1))
-      par(mfrow=c(ceiling(no_vars/2), 2))
-      
+      # par(mai=c(0.6,0.7,0.7,0.2))
+      # par(omi=c(0.8,0.5,0.2,0.1))
+      par(mfrow=c(nrow, ncol))
 
       #Plot
       for(n in 1:length(data)){
